@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <form action="POST" id="form">
+    <input type="text" name="name" placeholder="Nombre" required>
+    <input type="text" name="surname" placeholder="Apellido" required>
+    <input type="button" id="btn" value="Dale!">
+  </form>
+  <p class="state"></p>
+  <script>
+    let state = document.querySelector('.state');
+    document.querySelector('#btn').addEventListener('click', e => {
+      let formInputs = document.querySelectorAll('#form input[type=text]');
+      let data = '';
+      formInputs.forEach(elem => {
+        data += `${elem.name}=${elem.value}&`;
+        //console.dir(elem)
+      });
+      console.log(data);
+      let ajax = new XMLHttpRequest();
+      ajax.open('POST', '/add');
+      ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      ajax.onload = function () {
+        if (this.status === 200)
+          state.innerText = this.responseText;
+        else
+          state.innerText = `Error ${this.status} ${this.statusText}`;
+      }
+      ajax.send(data);
+    });
+  </script>
+</body>
+</html>
