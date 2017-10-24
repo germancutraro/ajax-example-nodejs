@@ -3,15 +3,18 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
 
+// conf
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => res.render('index'));
 
+// connection to mongo
 mongoose.connect('mongodb://localhost/ajaxNode', {useMongoClient: true});
 mongoose.connection.on('open', () => console.log('Connected!'));
 mongoose.connection.on('error', () => console.log('Error to connected to the database!'));
+// set promises
 mongoose.Promise = global.Promise;
 let userSchema = new mongoose.Schema({
   name: String,
